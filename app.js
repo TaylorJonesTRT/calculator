@@ -18,6 +18,8 @@ let displayVal = 0;
 let decimalAdded = false;
 let secondDecimalAdded = false;
 
+
+// Adding all event listeners for buttons on the calculator
 clearScreen.addEventListener("click", () => {
     calcScreen.value = 0;
     firstNum = "";
@@ -44,7 +46,7 @@ operatorBtn.forEach((button) => {
 });
 
 decimal.addEventListener('click', () => {
-    if (secondNum === "") {
+    if (operation === "") {
         if (!decimalAdded) {
             firstNum += ".";
             decimalAdded = true;
@@ -67,19 +69,19 @@ equalSign.addEventListener('click', () => {
         secondNum = "";
         operation = "";
     } else if (operation === "-") {
-        subtract(parseInt(firstNum), parseInt(secondNum));
+        subtract(parseFloat(firstNum), parseFloat(secondNum));
         updateScreen(result);
         firstNum = result;
         secondNum = "";
         operation = "";
     } else if (operation === "*") {
-        multiply(parseInt(firstNum), parseInt(secondNum));
+        multiply(parseFloat(firstNum), parseFloat(secondNum));
         updateScreen(result);
         firstNum = result;
         secondNum = "";
         operation = "";
     } else if (operation === "/") {
-        divide(parseInt(firstNum), parseInt(secondNum));
+        divide(parseFloat(firstNum), parseFloat(secondNum));
         updateScreen(result);
         firstNum = result;
         secondNum = "";
@@ -94,14 +96,29 @@ equalSign.addEventListener('click', () => {
 function add(a, b) {
     answer = a + b;
     result = (Math.round(answer * 10) / 10).toFixed(1)
+    if (result % 2 === 0) {
+        result = parseInt(result);
+    } else {
+        result = parseFloat(result);
+    }
 }
 function subtract(a, b) {
     answer = a - b;
     result = (Math.round(answer * 10) / 10).toFixed(1)
+    if (result % 2 === 0) {
+        result = parseInt(result);
+    } else {
+        result = parseFloat(result);
+    }
 }
 function multiply(a, b) {
     answer = a * b;
     result = (Math.round(answer * 10) / 10).toFixed(1)
+    if (result % 2 === 0) {
+        result = parseInt(result);
+    } else {
+        result = parseFloat(result);
+    }
 }
 function divide(a, b) {
     if (b === 0 || b === "0"){
@@ -109,6 +126,11 @@ function divide(a, b) {
     } else{
     answer = a / b;
     result = (Math.round(answer * 10) / 10).toFixed(1)
+    if (result % 2 === 0) {
+        result = parseInt(result);
+    } else {
+        result = parseFloat(result);
+    }
     }
 }
 
@@ -131,14 +153,14 @@ function numberInput(number) {
         if (input === "DEL") {
             secondNum = secondNum.substring(0, secondNum.length - 1);
             updateScreen(secondNum);
-        }else {
+        } else {
             secondNum += input;
             updateScreen(secondNum);
         }
     }
 }
 
-//TODO: Add functionality to use numpad/num row to input numbers
+// Keyboard input functionality
 document.addEventListener("keydown", event => {
     if (operation === "") {
         if (event.key == "1") {
@@ -181,6 +203,9 @@ document.addEventListener("keydown", event => {
             input = "0";
             firstNum += input;
             updateScreen(firstNum);
+        } else if (event.key === "Backspace") {
+            firstNum = firstNum.substring(0, firstNum.length - 1);
+            updateScreen(firstNum);
         }
     } else {
         if (event.key == "1") {
@@ -226,7 +251,6 @@ document.addEventListener("keydown", event => {
         }
     }
 });
-//TODO: Change screen output to have if statements to determine to show an int or a float
 
 // Do the below as just stuff to improve on your coding with
     // Refactor the functions for the operations to use switch cases
